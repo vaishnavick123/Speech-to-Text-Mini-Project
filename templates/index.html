@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Indic Voice AI</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Indic Voice AI</h1>
+    <form id="voice-form">
+        <label for="audio">Upload Audio:</label>
+        <input type="file" id="audio" name="audio" />
+        <button type="submit">Convert to Text</button>
+    </form>
+    <div id="output"></div>
+
+    <script>
+        document.getElementById('voice-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            const audio = document.getElementById('audio').files[0];
+            formData.append('audio', audio);
+
+            const response = await axios.post('/stt', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            document.getElementById('output').innerText = `Transcribed Text: ${response.data.text}`;
+        });
+    </script>
+</body>
+</html>
